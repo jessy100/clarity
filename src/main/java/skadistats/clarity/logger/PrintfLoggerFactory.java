@@ -13,15 +13,18 @@ public class PrintfLoggerFactory {
 
     static {
         try {
-            ILoggerFactory f = LoggerFactory.getILoggerFactory();
-            Class<? extends ILoggerFactory> c = f.getClass();
-            if (c.getName().equals("ch.qos.logback.classic.LoggerContext")) {
-                List<String> frameworkPackages = (List<String>) c.getMethod("getFrameworkPackages").invoke(f);
-                frameworkPackages.add("skadistats.clarity.logger");
-            }
+            invokeFrameWorkPackages();
         } catch (Exception e) {}
     }
 
+    public void invokeFrameWorkPackages(){
+        ILoggerFactory f = LoggerFactory.getILoggerFactory();
+        Class<? extends ILoggerFactory> c = f.getClass();
+        if (c.getName().equals("ch.qos.logback.classic.LoggerContext")) {
+            List<String> frameworkPackages = (List<String>) c.getMethod("getFrameworkPackages").invoke(f);
+            frameworkPackages.add("skadistats.clarity.logger");
+        }
+    }
     public static PrintfLogger getLogger(Enum category) {
         return getLogger(category.name());
     }

@@ -68,10 +68,15 @@ public abstract class BitStream {
         return pos;
     }
 
-    public void pos(int pos) {
+
+    public void checkIfPostInBitstream(){
         if (pos >= len) {
             throw new UnsupportedOperationException("pos >= len");
         }
+    }
+    
+    public void pos(int pos) {
+
         this.pos = pos;
     }
 

@@ -111,7 +111,9 @@ public class Entities {
         while (updateCount-- != 0) {
             entityIndex += stream.readUBitVar() + 1;
             cmd = stream.readUBitInt(2);
+            //Kijk of btiwise AND uitkomt op 1
             if ((cmd & 1) == 0) {
+                //kijk of bitwise AND uitkomt op 2 (0000 0010)
                 if ((cmd & 2) != 0) {
                     clsId = stream.readUBitInt(dtClasses.getClassBits());
                     cls = dtClasses.forClassId(clsId);
@@ -152,6 +154,7 @@ public class Entities {
                         entity.setActive(false);
                         evLeft.raise(entity);
                     }
+                    //kijk of bitwise AND uitkomt op 2 (0000 0010)
                     if ((cmd & 2) != 0) {
                         entities[entityIndex] = null;
                         evDeleted.raise(entity);

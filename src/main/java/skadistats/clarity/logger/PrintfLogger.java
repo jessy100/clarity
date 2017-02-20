@@ -26,35 +26,28 @@ public class PrintfLogger implements Logger {
     }
 
     @Override
-    public void trace(String s) {
+    public void traceString(String s) {
         if (delegate.isTraceEnabled()) {
             delegate.trace(s);
         }
     }
 
     @Override
-    public void trace(String s, Object o) {
+    public void traceObject(String s, Object o) {
         if (delegate.isTraceEnabled()) {
             delegate.trace(format(s, o));
         }
     }
 
     @Override
-    public void trace(String s, Object o, Object o1) {
+    public void traceTwoObjects(String s, Object o, Object o1) {
         if (delegate.isTraceEnabled()) {
             delegate.trace(format(s, o, o1));
         }
     }
 
     @Override
-    public void trace(String s, Object... objects) {
-        if (delegate.isTraceEnabled()) {
-            delegate.trace(format(s, objects));
-        }
-    }
-
-    @Override
-    public void trace(String s, Throwable throwable) {
+    public void traceThrowable(String s, Throwable throwable) {
         delegate.trace(s, throwable);
     }
 
@@ -64,35 +57,28 @@ public class PrintfLogger implements Logger {
     }
 
     @Override
-    public void trace(Marker marker, String s) {
+    public void traceMarkedString(Marker marker, String s) {
         if (delegate.isTraceEnabled(marker)) {
             delegate.trace(marker, s);
         }
     }
 
     @Override
-    public void trace(Marker marker, String s, Object o) {
+    public void traceMarkedObject(Marker marker, String s, Object o) {
         if (delegate.isTraceEnabled(marker)) {
             delegate.trace(marker, format(s, o));
         }
     }
 
     @Override
-    public void trace(Marker marker, String s, Object o, Object o1) {
+    public void traceTraceTwoMarkedObjects(Marker marker, String s, Object o, Object o1) {
         if (delegate.isTraceEnabled(marker)) {
             delegate.trace(marker, format(s, o, o1));
         }
     }
 
     @Override
-    public void trace(Marker marker, String s, Object... objects) {
-        if (delegate.isTraceEnabled(marker)) {
-            delegate.trace(marker, format(s, objects));
-        }
-    }
-
-    @Override
-    public void trace(Marker marker, String s, Throwable throwable) {
+    public void TraceMarkedThrowable(Marker marker, String s, Throwable throwable) {
         delegate.trace(marker, s, throwable);
     }
 
