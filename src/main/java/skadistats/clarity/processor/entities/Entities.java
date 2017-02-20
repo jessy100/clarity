@@ -108,27 +108,39 @@ public class Entities {
 
         boolean debug = false;
 
+        //Loop door het aantaal updates heen totdat deze 0 is.
         while (updateCount-- != 0) {
+            //Tel het volgende bit uit de stream op bij de index.
             entityIndex += stream.readUBitVar() + 1;
             cmd = stream.readUBitInt(2);
             //Kijk of btiwise AND uitkomt op 1
             if ((cmd & 1) == 0) {
                 //kijk of bitwise AND uitkomt op 2 (0000 0010)
                 if ((cmd & 2) != 0) {
+                    //Lees de int en haal de bijbehorende classId op
                     clsId = stream.readUBitInt(dtClasses.getClassBits());
+                    //Haal de class op adh van classId
                     cls = dtClasses.forClassId(clsId);
+                    //Check of de class bestaat
                     if (cls == null) {
                         throw new ClarityException("class for new entity %d is %d, but no dtClass found!.", entityIndex, clsId);
                     }
+                    //Lees het type engine uit de stream
                     serial = stream.readUBitInt(engineType.getSerialBits());
+                    //Indien de engine source2 is, lees de int in als Uint.
                     if (engineType == EngineType.SOURCE2) {
                         // TODO: there is an extra VarInt encoded here for S2, figure out what it is
                         stream.readVarUInt();
                     }
+                    //Vraag de state op van de class
                     state = Util.clone(getBaseline(cls.getClassId()));
+                    //Lees alle entiteiten in behorende tot de class
                     fieldReader.readFields(stream, cls, state, debug);
+                    //maak een nieuwe entiteit aan van de betreffende replay
                     entity = new Entity(engineType, entityIndex, serial, cls, true, state);
+                    //Sla hem op in een array.
                     entities[entityIndex] = entity;
+                    //Raise de entity
                     evCreated.raise(entity);
                     evEntered.raise(entity);
                 } else {
@@ -140,6 +152,7 @@ public class Entities {
                     state = entity.getState();
                     int nChanged = fieldReader.readFields(stream, cls, state, debug);
                     evUpdated.raise(entity, fieldReader.getFieldPaths(), nChanged);
+                    //Kijk of de enitity reeds behandelt is.
                     if (!entity.isActive()) {
                         entity.setActive(true);
                         evEntered.raise(entity);
@@ -150,6 +163,7 @@ public class Entities {
                 if (entity == null) {
                     log.warn("entity at index %d was not found when ordered to leave.", entityIndex);
                 } else {
+                    //Kijk of de enitity reeds behandelt is.
                     if (entity.isActive()) {
                         entity.setActive(false);
                         evLeft.raise(entity);
