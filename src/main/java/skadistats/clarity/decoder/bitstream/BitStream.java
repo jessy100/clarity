@@ -54,7 +54,7 @@ public abstract class BitStream {
         }
     }
 
-    protected abstract int peekBit(int pos);
+    protected abstract int peekBit(int position);
     public abstract int readUBitInt(int n);
     public abstract long readUBitLong(int n);
     public abstract void readBitsIntoByteArray(byte[] dest, int n);

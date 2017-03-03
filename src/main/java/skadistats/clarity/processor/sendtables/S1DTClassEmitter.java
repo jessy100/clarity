@@ -1,10 +1,7 @@
 package skadistats.clarity.processor.sendtables;
 
 import skadistats.clarity.decoder.Util;
-import skadistats.clarity.decoder.s1.S1DTClass;
-import skadistats.clarity.decoder.s1.SendProp;
-import skadistats.clarity.decoder.s1.SendTable;
-import skadistats.clarity.decoder.s1.SendTableFlattener;
+import skadistats.clarity.decoder.s1.*;
 import skadistats.clarity.event.Event;
 import skadistats.clarity.event.Insert;
 import skadistats.clarity.event.InsertEvent;
@@ -30,8 +27,9 @@ public class S1DTClassEmitter {
     @InsertEvent
     private Event<OnDTClass> evDtClass;
 
+    //Resultaat van make static
     @OnMessage(S1NetMessages.CSVCMsg_SendTable.class)
-    public void onSendTable(S1NetMessages.CSVCMsg_SendTable message) {
+    public static void onSendTable(Event<OnDTClass> evDtClass, S1NetMessages.CSVCMsg_SendTable message) {
 
         LinkedList<SendProp> props = new LinkedList<SendProp>();
         SendTable st = new SendTable(
@@ -41,29 +39,18 @@ public class S1DTClassEmitter {
 
         for (S1NetMessages.CSVCMsg_SendTable.sendprop_t sp : message.getPropsList()) {
             props.add(
-                new SendProp(
-                    st,
-                    sp.getType() == PropType.ARRAY.ordinal() ? props.peekLast() : null,
-                    sp.getType(),
-                    sp.getVarName(),
-                    sp.getFlags(),
-                    sp.getPriority(),
-                    sp.getDtName(),
-                    sp.getNumElements(),
-                    sp.getLowValue(),
-                    sp.getHighValue(),
-                    sp.getNumBits()
-                )
+                    new SendPropBuilder().setTable(st).setTemplate(sp.getType() == PropType.ARRAY.ordinal() ? props.peekLast() : null).setType(sp.getType()).setVarName(sp.getVarName()).setFlags(sp.getFlags()).setPriority(sp.getPriority()).setDtName(sp.getDtName()).setNumElements(sp.getNumElements()).setLowValue(sp.getLowValue()).setHighValue(sp.getHighValue()).setNumBits(sp.getNumBits()).createSendProp()
             );
         }
-        DTClass dtClass = new S1DTClass(message.getNetTableName(), st);
+        DTClass dtClass = S1DTClass.createS1DTClass(message.getNetTableName(), st);
         evDtClass.raise(dtClass);
     }
 
     @OnMessage(Demo.CDemoClassInfo.class)
     public void onClassInfo(Demo.CDemoClassInfo message) {
         for (Demo.CDemoClassInfo.class_t ct : message.getClassesList()) {
-            DTClass dt = dtClasses.forDtName(ct.getTableName());
+            //RESULTAAT VAN INLINE
+            DTClass dt = dtClasses.byDtName.get(ct.getTableName());
             dt.setClassId(ct.getClassId());
             dtClasses.byClassId.put(ct.getClassId(), dt);
         }
@@ -85,7 +72,7 @@ public class S1DTClassEmitter {
             S1DTClass dtc = (S1DTClass) iter.next();
             String superClassName = dtc.getSendTable().getBaseClass();
             if (superClassName != null) {
-                dtc.setSuperClass((S1DTClass) dtClasses.forDtName(superClassName));
+                dtc.setSuperClass((S1DTClass) dtClasses.byDtName.get(superClassName));
             }
         }
     }

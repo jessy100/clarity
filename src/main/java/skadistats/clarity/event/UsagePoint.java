@@ -55,10 +55,16 @@ public class UsagePoint<A extends Annotation> {
     }
 
     @Override
+    //EXTRACT METHOD RESULTAAT
     public int hashCode() {
         int result = annotation.hashCode();
-        result = 31 * result + processorClass.hashCode();
+        result = getResult(result);
         result = 31 * result + (method != null ? method.hashCode() : 0);
+        return result;
+    }
+
+    private int getResult(int result) {
+        result = 31 * result + processorClass.hashCode();
         return result;
     }
 

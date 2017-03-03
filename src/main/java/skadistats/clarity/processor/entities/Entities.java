@@ -213,14 +213,13 @@ public class Entities {
         }
         return be.baseline;
     }
-
+    //Extract method object
     public Entity getByIndex(int index) {
         return entities[index];
     }
 
     public Entity getByHandle(int handle) {
-        Entity e = entities[engineType.indexForHandle(handle)];
-        return e == null || e.getSerial() != engineType.serialForHandle(handle) ? null : e;
+        return new EntityType(handle).invoke();
     }
 
     public Iterator<Entity> getAllByPredicate(final Predicate<Entity> predicate) {
@@ -260,4 +259,16 @@ public class Entities {
         return iter.hasNext() ? iter.next() : null;
     }
 
+    private class EntityType {
+        private int handle;
+
+        public EntityType(int handle) {
+            this.handle = handle;
+        }
+
+        public Entity invoke() {
+            Entity e = entities[engineType.indexForHandle(handle)];
+            return e == null || e.getSerial() != engineType.serialForHandle(handle) ? null : e;
+        }
+    }
 }

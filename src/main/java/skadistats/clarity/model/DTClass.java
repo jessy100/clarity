@@ -7,7 +7,9 @@ public interface DTClass {
     String getDtName();
 
     int getClassId();
-    void setClassId(int classId);
+
+    @Override
+    abstract void setClassId(int classId);
 
     Object[] getEmptyStateArray();
 

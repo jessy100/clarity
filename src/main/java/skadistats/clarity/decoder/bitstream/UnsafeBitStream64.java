@@ -10,10 +10,10 @@ public class UnsafeBitStream64 extends UnsafeBitStreamBase {
         super(input);
     }
 
-    protected int peekBit(int pos) {
-        int pb = pos >> 3;
+    protected int peekBit(int position) {
+        int pb = position >> 3;
         checkAccessRelative(pb, 1);
-        return (unsafe.getByte(data, base + pb) >> (pos & 7)) & 1;
+        return (unsafe.getByte(data, base + pb) >> (position & 7)) & 1;
     }
 
     @Override

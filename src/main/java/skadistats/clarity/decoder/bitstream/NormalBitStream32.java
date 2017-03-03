@@ -19,8 +19,8 @@ public class NormalBitStream32 extends BitStream {
     }
 
     @Override
-    protected int peekBit(int pos) {
-        return (data[pos >> 5] >> (pos & 31)) & 1;
+    protected int peekBit(int position) {
+        return (data[position >> 5] >> (position & 31)) & 1;
     }
 
     @Override

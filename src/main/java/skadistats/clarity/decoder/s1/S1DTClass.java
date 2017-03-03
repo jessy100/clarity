@@ -20,9 +20,14 @@ public class S1DTClass implements DTClass {
     private Map<String, Integer> propsByName;
     private S1DTClass superClass;
 
-    public S1DTClass(String dtName, SendTable sendTable) {
+        //Introduce FactoryMethod resultaat
+    private S1DTClass(String dtName, SendTable sendTable) {
         this.dtName = dtName;
         this.sendTable = sendTable;
+    }
+
+    public static S1DTClass createS1DTClass(String dtName, SendTable sendTable) {
+        return new S1DTClass(dtName, sendTable);
     }
 
     @Override
@@ -30,6 +35,8 @@ public class S1DTClass implements DTClass {
         return classId;
     }
 
+    //RESULTAAT PULL UP
+    @java.lang.Override
     @Override
     public void setClassId(int classId) {
         this.classId = classId;

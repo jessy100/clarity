@@ -21,7 +21,7 @@ public class SendTableFlattener {
     }
 
     private SendTable sendTableForDtName(String dtName) {
-        S1DTClass dtClass = (S1DTClass) dtClasses.forDtName(dtName);
+        S1DTClass dtClass = (S1DTClass) dtClasses.byDtName.get(dtName);
         return dtClass.getSendTable();
     }
 

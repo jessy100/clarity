@@ -18,8 +18,8 @@ public class NormalBitStream64 extends BitStream {
         len = len * 8; // from now on size in bits
     }
 
-    protected int peekBit(int pos) {
-        return (int)((data[pos >> 6] >> (pos & 63)) & 1L);
+    protected int peekBit(int position) {
+        return (int)((data[position >> 6] >> (position & 63)) & 1L);
     }
 
     @Override

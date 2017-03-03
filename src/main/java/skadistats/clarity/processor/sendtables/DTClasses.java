@@ -23,10 +23,6 @@ public class DTClasses {
         return byClassId.get(id);
     }
 
-    public DTClass forDtName(String dtName) {
-        return byDtName.get(dtName);
-    }
-
     public Iterator<DTClass> iterator() {
         return byClassId.values().iterator();
     }

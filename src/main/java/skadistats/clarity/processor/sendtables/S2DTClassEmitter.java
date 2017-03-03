@@ -170,7 +170,7 @@ public class S2DTClassEmitter {
     @OnMessage(Demo.CDemoClassInfo.class)
     public void onDemoClassInfo(Demo.CDemoClassInfo message) {
         for (Demo.CDemoClassInfo.class_t ct : message.getClassesList()) {
-            DTClass dt = dtClasses.forDtName(ct.getNetworkName());
+            DTClass dt = dtClasses.byDtName.get(ct.getNetworkName());
             dt.setClassId(ct.getClassId());
             dtClasses.byClassId.put(ct.getClassId(), dt);
         }
@@ -181,7 +181,7 @@ public class S2DTClassEmitter {
     @OnMessage(NetMessages.CSVCMsg_ClassInfo.class)
     public void onServerClassInfo(NetMessages.CSVCMsg_ClassInfo message) {
         for (NetMessages.CSVCMsg_ClassInfo.class_t ct : message.getClassesList()) {
-            DTClass dt = dtClasses.forDtName(ct.getClassName());
+            DTClass dt = dtClasses.byDtName.get(ct.getClassName());
             dt.setClassId(ct.getClassId());
             dtClasses.byClassId.put(ct.getClassId(), dt);
         }
