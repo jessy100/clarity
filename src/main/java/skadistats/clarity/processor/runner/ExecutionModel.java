@@ -274,7 +274,7 @@ public class ExecutionModel {
             if (im != null) {
                 try {
                     im.invoke(up);
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     Util.uncheckedThrow(e);
                 }
             }
