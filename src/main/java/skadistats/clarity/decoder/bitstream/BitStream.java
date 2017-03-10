@@ -20,7 +20,7 @@ public abstract class BitStream {
     private static final int NORMAL_FRACTIONAL_BITS = 11;
     private static final float NORMAL_FRACTIONAL_RESOLUTION = (1.0f / ((1 << NORMAL_FRACTIONAL_BITS) - 1));
 
-    public static final long[] MASKS = {
+    protected static final long[] MASKS = {
         0x0L,               0x1L,                0x3L,                0x7L,
         0xfL,               0x1fL,               0x3fL,               0x7fL,
         0xffL,              0x1ffL,              0x3ffL,              0x7ffL,
